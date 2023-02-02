@@ -7,6 +7,7 @@ const connectDB = require('./config/connection');
 var hbs = require('express-handlebars');
 const db = process.env.MONGO_URI;
 const { layoutsDir, partialsDir } = require('express-hbs');
+const bcrypt = require('bcrypt')
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 app.engine('hbs',hbs.engine({extname:'hbs',defaultLayout:'layout',layoutsDir:__dirname+'/views/layout/',partialDir:__dirname+'views/partials/'}))
@@ -25,14 +26,13 @@ app.get('/signup', (req,res)=>{
 })
 
 app.post('/submit',async (req,res)=>{
-    console.log(req.body);
+    req.body.pw = await bcrypt.hash(req.body.pw,10)
     User.create(req.body)
     res.render('user/homepage')
-    
 })
 
 app.get('/login',(req,res)=>{
-    res.send('<H1>LoginPage</H1>')
+    res.render('user/login')
 })
 
 const start = async ()=>{

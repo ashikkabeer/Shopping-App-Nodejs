@@ -5,9 +5,5 @@ const userSchema = new mongoose.Schema({
     pw : "String",
 
 })
-
-
-
-
 module.exports = 
     mongoose.model('User',userSchema)
