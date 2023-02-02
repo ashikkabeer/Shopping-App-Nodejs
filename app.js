@@ -1,5 +1,5 @@
 const express = require('express');
-const { mongo } = require('mongoose');
+const { mongo, default: mongoose } = require('mongoose');
 const app = express();
 var path = require('path');
 require('dotenv').config();
@@ -14,6 +14,8 @@ app.engine('hbs',hbs.engine({extname:'hbs',defaultLayout:'layout',layoutsDir:__d
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+const User = require('./models/models')
+
 app.get('/',(req,res)=>{
     res.send('<H1>Shopping App</H1>')
 })
@@ -21,8 +23,12 @@ app.get('/signup', (req,res)=>{
     // res.send('<H1>Signup Page</H1>')
     res.render('user/signup')
 })
-app.post('/submit',(req,res)=>{
+
+app.post('/submit',async (req,res)=>{
     console.log(req.body);
+    User.create(req.body)
+    res.render('user/homepage')
+    
 })
 
 app.get('/login',(req,res)=>{
