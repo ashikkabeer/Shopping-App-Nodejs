@@ -34,6 +34,18 @@ app.post('/submit',async (req,res)=>{
 app.get('/login',(req,res)=>{
     res.render('user/login')
 })
+app.post('/loginsubmit',async (req,res)=>{
+    try {
+        const hi = await User.findOne({ email: req.body.email })
+        if(hi.pw === req.body.pw){  
+            console.log('login success');
+        }else{
+            console.log('login failed');
+        }
+    } catch (error) {
+        console.log(error);
+    }
+})
 
 const start = async ()=>{
     try {
